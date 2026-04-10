@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>404 - Quiz Time!</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: luckiest guy, sans-serif;
+      background: linear-gradient(135deg, #fae7b9);
+      color: #186B23;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 90vh;
+      text-align: left;
+    }
+.container {
+  max-width: 1000px;
+  margin-top: 200px; 
+}
+
+    h1 {
+      font-size: 80px;
+      margin: 0;
+    }
+
+    .question {
+      margin: 20px 0;
+      font-family: hand originals;
+      font-size: 20px;
+    }
+
+    .answers button {
+      padding: 10px 35px;
+      border: none;
+      margin-right: 15px;
+      font-family: hand originals;
+      border-radius: 40px;
+      cursor: pointer;
+      background: #fff;
+      color: #FFC943;
+      font-weight: 700;
+      transition: 0.3s;
+      flex: 1;
+      min-width: 150px;
+      max-width: 500px;
+    }
+
+    .answers button:hover {
+      background: #186B23;
+      color: white;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    #explanation {
+      margin-top: 15px;
+      font-family: luckiest guy;
+      font-size: 30px;
+      display: none;
+    }
+
+    #score {
+      margin-top: 10px;
+      opacity: 0.8;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #186B23;
+      color: #FFC943;
+      text-decoration: none;
+      border-radius: 20px;
+    }
+
+    .fa-solid-binoculars {
+      position: absolute;
+      top: 10px;
+    }
+
+   
+ .fake-header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  background: transparent; /* or add color if you want */
+}
+
+.fake-header img {
+  max-width: 1150px;   /* controls header size */
+  width: 100%;
+  height: 10pc;
+}
+ 
+
+  </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="fake-header">
+  <img src="mandai-header.png" alt="Mandai Header">
+</div>
+
+<div class="container">
+  <h1>404 <i class="fa-solid fa-binoculars fa-x"></i></h1>
+  
+  <p>Page not found... but hey, lets get brainy!</p>
+
+  <div class="question" id="question">Loading question...</div>
+
+  <div class="answers" id="answers"></div>
+
+  <div id="result"></div>
+
+  <!-- ✅ EXPLAINER -->
+  <div id="explanation">
+    <strong style="display:block; text-align:center;">
+  Why did the Bali tiger go extinct?</strong><br>
+    The Bali tiger went extinct because: Humans destroyed its forest, hunted it directly, and removed its food supply — and because it was isolated on a small island, it had no chance to recover.
+  </div>
+
+  <div id="score">Score: 0</div>
+
+  <a href="https://www.mandai.com/en/learn-with-us/action-for-wildlife.html/">Learn about wildlife conservation</a><br>
+  <a href="https://www.mandai.com/en.html/">Go Home</a>
+</div>
+
+<script>
+const quiz = [
+  {
+    q: "Can you guess which of these 3 animals are completely extinct?",
+    a: ["1. Malayan pangolin", "2. Malayan tapir", "3. Bali tiger"],
+    correct: 2
+  }
+];
+
+let current = 0;
+let score = 0;
+let wrongAttempts = 0;
+
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const resultEl = document.getElementById("result");
+const explanationEl = document.getElementById("explanation");
+const scoreEl = document.getElementById("score");
+
+function loadQuestion() {
+  if (current >= quiz.length) {
+    questionEl.textContent = "Quiz finished!";
+    answersEl.innerHTML = "";
+    resultEl.textContent = "Final Score: " + score + "/" + quiz.length;
+    explanationEl.style.display = "none";
+    return;
+  }
+
+  wrongAttempts = 0;
+  explanationEl.style.display = "none";
+
+  const q = quiz[current];
+  questionEl.textContent = q.q;
+  answersEl.innerHTML = "";
+
+  q.a.forEach((ans, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = ans;
+    btn.onclick = () => checkAnswer(i);
+    answersEl.appendChild(btn);
+  });
+}
+
+function checkAnswer(i) {
+  if (i === quiz[current].correct) {
+    resultEl.textContent = "✅ Correct!";
+    score++;
+
+    // Show explanation
+    explanationEl.style.display = "block";
+
+    // Move to next question after delay
+    current++;
+   
+
+  } else {
+    wrongAttempts++;
+
+    if (wrongAttempts === 1) {
+      resultEl.textContent = "❌ Wrong!";
+    } else {
+      resultEl.textContent = "❌ Still wrong! Try again 👀";
+    }
+
+    explanationEl.style.display = "none";
+  }
+
+  scoreEl.textContent = "Score: " + score;
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
